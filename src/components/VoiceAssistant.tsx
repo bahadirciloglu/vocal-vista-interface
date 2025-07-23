@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -113,7 +113,7 @@ const VoiceAssistant = () => {
   });
 
   // Fetch backend metrics
-  const fetchBackendMetrics = async () => {
+  const fetchBackendMetrics = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:8000/metrics');
       if (response.ok) {
@@ -124,7 +124,7 @@ const VoiceAssistant = () => {
     } catch (err) {
       console.error('Failed to fetch backend metrics:', err);
     }
-  };
+  }, []);
 
   // Reset metrics on component mount and fetch backend metrics
   useEffect(() => {
@@ -143,7 +143,7 @@ const VoiceAssistant = () => {
     const interval = setInterval(fetchBackendMetrics, 5000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchBackendMetrics]);
 
   // Simple language detection based on common words
   const detectLanguage = (text: string): string => {
@@ -169,13 +169,13 @@ const VoiceAssistant = () => {
     return 'auto'; // Default to auto-detection
   };
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, []); // scrollToBottom is stable and doesn't need dependencies
+  }, [scrollToBottom]);
 
   const handleMicToggle = () => {
     console.log('Mic button clicked, current state:', isListening);
@@ -290,7 +290,8 @@ const VoiceAssistant = () => {
           setPerformanceMetrics(prev => ({
             avgLatency: (prev.avgLatency * prev.totalRequests + currentLatency) / (prev.totalRequests + 1),
             totalRequests: prev.totalRequests + 1,
-            successRate: prev.successRate
+            successRate: prev.successRate,
+            processingTime: prev.processingTime
           }));
           
           // If final result, process the complete transcription
@@ -448,7 +449,9 @@ const VoiceAssistant = () => {
         setPerformanceMetrics(prev => ({
           ...prev,
           totalRequests: prev.totalRequests + 1,
-          successRate: ((prev.totalRequests * prev.successRate / 100) / (prev.totalRequests + 1)) * 100
+          successRate: ((prev.totalRequests * prev.successRate / 100) / (prev.totalRequests + 1)) * 100,
+          processingTime: prev.processingTime,
+          avgLatency: prev.avgLatency
         }));
       }
     }
@@ -1004,19 +1007,19 @@ const VoiceAssistant = () => {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Memory Usage:</span>
-                  <span className="font-mono">{backendMetrics.system.memory_usage_percent.toFixed(1)}%</span>
+                  <span className="font-mono">{typeof backendMetrics.system.memory_usage_percent === 'number' ? backendMetrics.system.memory_usage_percent.toFixed(1) + '%' : '-'}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>CPU Usage:</span>
-                  <span className="font-mono">{backendMetrics.system.cpu_usage_percent.toFixed(1)}%</span>
+                  <span className="font-mono">{typeof backendMetrics.system.cpu_usage_percent === 'number' ? backendMetrics.system.cpu_usage_percent.toFixed(1) + '%' : '-'}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Uptime:</span>
-                  <span className="font-mono">{backendMetrics.system.uptime_seconds.toFixed(1)}s</span>
+                  <span className="font-mono">{typeof backendMetrics.system.uptime_seconds === 'number' ? backendMetrics.system.uptime_seconds.toFixed(1) + 's' : '-'}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Active Connections:</span>
-                  <span className="font-mono">{backendMetrics.system.active_connections}</span>
+                  <span className="font-mono">{typeof backendMetrics.system.active_connections === 'number' ? backendMetrics.system.active_connections : '-'}</span>
                 </div>
               </div>
             </div>
@@ -1027,19 +1030,19 @@ const VoiceAssistant = () => {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Total Requests:</span>
-                  <span className="font-mono">{backendMetrics.performance.total_requests}</span>
+                  <span className="font-mono">{typeof backendMetrics.performance.total_requests === 'number' ? backendMetrics.performance.total_requests : '-'}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Success Rate:</span>
-                  <span className="font-mono">{backendMetrics.performance.success_rate_percent.toFixed(1)}%</span>
+                  <span className="font-mono">{typeof backendMetrics.performance.success_rate_percent === 'number' ? backendMetrics.performance.success_rate_percent.toFixed(1) + '%' : '-'}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Avg Response:</span>
-                  <span className="font-mono">{backendMetrics.performance.avg_response_time_ms.toFixed(0)}ms</span>
+                  <span className="font-mono">{typeof backendMetrics.performance.avg_response_time_ms === 'number' ? backendMetrics.performance.avg_response_time_ms.toFixed(0) + 'ms' : '-'}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Min/Max:</span>
-                  <span className="font-mono">{backendMetrics.performance.min_response_time_ms.toFixed(0)}/{backendMetrics.performance.max_response_time_ms.toFixed(0)}ms</span>
+                  <span className="font-mono">{typeof backendMetrics.performance.min_response_time_ms === 'number' && typeof backendMetrics.performance.max_response_time_ms === 'number' ? backendMetrics.performance.min_response_time_ms.toFixed(0) + '/' + backendMetrics.performance.max_response_time_ms.toFixed(0) + 'ms' : '-'}</span>
                 </div>
               </div>
             </div>

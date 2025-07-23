@@ -1,91 +1,44 @@
-# AssemblyAI Voice Assistant Project – Task List & Implementation Plan
+AssemblyAI Voice Assistant – Feature Test & Development Checklist
+1. Temel Fonksiyonlar (Basit)
+[x] Uygulama ana sayfası açılıyor mu?
+[x] Konuşma penceresi (chat window) ekranda görünüyor mu?
+[x] Mikrofon butonu ekranda ve tıklanabilir mi?
+[x] Durum göstergesi (Listening/Processing/Speaking) doğru şekilde değişiyor mu?
+[x] Gerçek zamanlı transkript alanı çalışıyor mu?
+[x] Kullanıcıdan ses kaydı alınabiliyor mu?
+[x] API anahtarları ve endpoint environment variable olarak yönetiliyor mu?
+2. Orta Seviye Fonksiyonlar
+[x] Mikrofon ile sesli komut verildiğinde, AssemblyAI STT API’sine istek atılıyor mu?
+[x] Kullanıcı konuşması doğru şekilde metne çevriliyor mu?
+[x] Metin, /chat endpoint’ine gönderilip LLM’den yanıt alınıyor mu?
+[x] LLM yanıtı ekranda doğru şekilde gösteriliyor mu?
+[x] LLM yanıtı AssemblyAI TTS API’sine gönderilip sesli yanıt oynatılıyor mu?
+[x] Kullanıcı ve asistan mesajları chat penceresinde doğru sırada ve baloncuklarla gösteriliyor mu?
+[x] Hatalı API yanıtlarında kullanıcıya açık hata mesajı gösteriliyor mu?
+3. İleri Seviye ve Yarışma Kurallarına Uygunluk
+[ ] Erişilebilirlik: Klavye ile tüm butonlara ve alanlara erişilebiliyor mu?
+[ ] Erişilebilirlik: Screen reader ile uygulama kullanılabiliyor mu?
+[x] Yüksek kontrast ve okunabilirlik sağlanıyor mu?
+[x] Mobil ve masaüstü uyumluluğu (responsive design) test edildi mi?
+[ ] Kullanıcı deneyimi: Akışta gecikme <1s (ideali <300ms) sağlanıyor mu?
+[x] Kullanıcı deneyimi: Durum göstergeleri ve animasyonlar sezgisel mi?
+[x] Yaratıcılık: Uygulamada eklenen özgün/yaratıcı bir özellik var mı? (örn. kişiselleştirilmiş öneri, özel animasyon, ek API entegrasyonu)
+[x] Çoklu dil desteği (varsa) test edildi mi?
+[x] Kullanıcı ve geliştirici dokümantasyonu güncel ve erişilebilir mi?
+[x] CI/CD pipeline ile otomatik test ve deploy çalışıyor mu?
+4. Ekstra (Opsiyonel)
+[ ] Analytics ve logging dashboard entegre edildi mi?
+[ ] Gerçek kullanıcı testleriyle geri bildirim toplandı mı?
+[ ] Demo ve sunum materyalleri hazırlandı mı?
 
----
 
-## 1. Project Setup
-- [x] Set up project repository and version control (e.g., GitHub)
-- [x] Define project structure for frontend
-- [x] Configure environment variables for API keys (AssemblyAI, LLM, etc.)
-- [x] Set up CI/CD pipeline for automated testing and deployment
-    - [x] Add workflow file (e.g., .github/workflows/ci.yml) for automated test and deploy
+# Yapılacaklar (Güncel Liste)
 
----
-
-## 2. Frontend Development
-- [x] Design and implement the main UI (see design.md wireframe)
-    - [x] Conversation window
-    - [x] Microphone button
-    - [x] Real-time transcription display
-    - [x] Status indicator (listening, processing, speaking)
-    - [x] Accessibility features (high-contrast mode, keyboard navigation, screen reader support)
-- [x] Implement audio capture from microphone
-- [x] Implement audio playback for TTS responses
-- [x] Ensure responsive design for desktop and mobile
-- [x] Integrate with external APIs:
-    - [x] Call /stt, /chat, /tts endpoints from the frontend (these APIs are not implemented locally, but are called externally when the user clicks relevant buttons or as part of the conversation flow)
-
----
-
-## 3. Backend Development
-- [ ] (Not implemented in this project) All API endpoints (/stt, /chat, /tts) are called externally.
-
----
-
-## 4. AssemblyAI Integration
-- [x] Integrate AssemblyAI Universal-Streaming STT for real-time speech-to-text
-    - [x] Configure for low latency (<300ms)
-    - [ ] (Optional) Set up custom vocabulary for domain-specific terms
-    - [ ] (Optional) Enable speaker detection and PII redaction
-- [x] Integrate AssemblyAI TTS for text-to-speech
-    - [ ] (Optional) Support multiple voices/languages if required
-- [ ] (Optional) Use AssemblyAI sentiment analysis and content moderation APIs
-
----
-
-## 5. LLM & External API Integration
-- [x] Integrate LLM (Gemini, OpenAI, or custom backend) via external API
-    - [x] Pass transcribed text and chat history for context-aware responses
-    - [ ] (Optional) Integrate Qloo API or other external APIs for recommendations
-- [x] Handle LLM response formatting and error cases
-
----
-
-## 6. User Experience & Accessibility
-- [x] Ensure low end-to-end latency (<1s, ideally <300ms for streaming)
-- [x] Implement clear error feedback for users
-- [x] Test and optimize for screen readers and keyboard navigation
-- [x] Provide high-contrast and multi-device support
-
----
-
-## 7. Testing & Quality Assurance
-- [ ] Write unit and integration tests for frontend API calls and UI
-- [x] Test frontend UI/UX across devices and browsers
-- [ ] Simulate real-world conversation flows (see design.md sample)
-- [ ] Monitor latency, accuracy, and error rates
-
----
-
-## 8. Deployment & Monitoring
-- [x] Deploy frontend to production (e.g., Vercel, Render, AWS)
-- [ ] Set up real-time monitoring for API usage, latency, and errors
-- [x] Document setup, usage, and troubleshooting steps
-
----
-
-## 9. Documentation & Handover
-- [x] Finalize and maintain requirements.md and design.md
-- [x] Provide user and developer documentation
-- [x] Prepare demo and presentation materials (if for hackathon/portfolio)
-
----
-
-## 10. Optional/Advanced Tasks
-- [ ] Add multi-language support
-- [ ] Integrate analytics and logging dashboard
-- [ ] Expand with additional external APIs (e.g., hotel booking, CRM)
-- [ ] Enhance personalization and context retention
-
----
-
-_This checklist is derived from requirements.md and design.md. Check off each item as you progress to ensure a robust, accessible, and production-ready AssemblyAI voice assistant!_
+- [ ] Erişilebilirlik: Klavye ile tüm butonlara ve alanlara erişim (tabindex, aria-label, vs.)
+- [ ] Erişilebilirlik: Screen reader ile tam uyumluluk
+- [ ] Akışta gecikme optimizasyonu (<1s, ideali <300ms)
+- [ ] Analytics ve logging dashboard entegrasyonu
+- [ ] Gerçek kullanıcı testleri ve geri bildirim
+- [ ] Demo ve sunum materyallerinin hazırlanması
+- [ ] (Varsa) Eksik API endpointlerinin tamamlanması ve test edilmesi
+- [ ] Son kullanıcı ve geliştirici dokümantasyonunun güncellenmesi
