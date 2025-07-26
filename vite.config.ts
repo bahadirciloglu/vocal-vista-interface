@@ -9,6 +9,23 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     strictPort: true,
+            proxy: {
+          '/api': {
+            target: 'http://localhost:8000', // For AssemblyAI token only
+            changeOrigin: true,
+            secure: false
+          },
+          '/chat': {
+            target: 'http://localhost:8001',
+            changeOrigin: true,
+            secure: false
+          },
+          '/metrics': {
+            target: 'http://localhost:8001',
+            changeOrigin: true,
+            secure: false
+          }
+        }
   },
   plugins: [
     react(),
